@@ -1,0 +1,3 @@
+[submodule "src/d3"]
+	path = src/d3
+	url = https://github.com/d3/d3
