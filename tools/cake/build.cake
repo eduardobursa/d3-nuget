@@ -15,7 +15,8 @@ Setup((context) => {
     Namespaces = new Dictionary<string, string> {{ "p", "http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" }}
   });
 
-  GitCheckout(d3_submodule_folder, $"v{version}");
+  // TODO: do we need a dinamic checkout?
+  // GitCheckout(d3_submodule_folder, $"v{version}");
   
   Yarn.FromPath(d3_submodule_folder).Install();
 });
