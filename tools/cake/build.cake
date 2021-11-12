@@ -39,7 +39,7 @@ Task("pack")
     Yarn.FromPath(d3_submodule_folder).RunScript("rollup -c");
 
     CopyFile(d3_submodule_folder + File("/API.md"), d3_dist_folder + File("/API.md"));
-    CopyFile(d3_submodule_folder + File("/CHANGES.MD"), d3_dist_folder + File("/CHANGES.MD"));
+    CopyFile(d3_submodule_folder + File("/CHANGES.md"), d3_dist_folder + File("/CHANGES.md"));
     CopyFile(d3_submodule_folder + File("/LICENSE"), d3_dist_folder + File("/LICENSE"));
     CopyFile(d3_submodule_folder + File("/README.md"), d3_dist_folder + File("/README.md"));
 
