@@ -19,5 +19,5 @@ jobs:
       - name: Build & Pack
         run: |
           dotnet tool restore
-          dotnet cake --target=pack
+          dotnet cake --target=pack --verbosity=diagnostic
         working-directory: ./tools/cake/
