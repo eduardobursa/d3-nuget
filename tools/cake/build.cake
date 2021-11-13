@@ -82,7 +82,7 @@ Task("push")
   .Does(() => 
   {
     NuGetPush(d3_dist_folder + File($"/d3.{version}.nupkg"), new NuGetPushSettings {
-      ApiKey = EnvironmentVariable("NUGET_API_KEY");
+      ApiKey = EnvironmentVariable("NUGET_API_KEY")
     });
   });
 
