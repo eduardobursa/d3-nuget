@@ -82,6 +82,7 @@ Task("push")
   .Does(() => 
   {
     NuGetPush(d3_dist_folder + File($"/d3.{version}.nupkg"), new NuGetPushSettings {
+      Source = "https://api.nuget.org/v3/index.json",
       ApiKey = EnvironmentVariable("NUGET_API_KEY")
     });
   });

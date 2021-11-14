@@ -26,7 +26,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
-            ./src/d3/*.nupkg
+            src/d3/dist/*.nupkg
 
       - name: nuget push
         if: startsWith(github.ref, 'refs/tags/')  
