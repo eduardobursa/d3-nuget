@@ -79,6 +79,7 @@ Task("pack")
 
 Task("push")
   .Description("Pushes nuget package")
+  .IsDependentOn("pack")
   .Does(() => 
   {
     NuGetPush(d3_dist_folder + File($"/d3.{version}.nupkg"), new NuGetPushSettings {

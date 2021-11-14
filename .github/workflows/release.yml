@@ -14,10 +14,12 @@ jobs:
         with:
           submodules: "true"
 
-      - name: build & pack
+      - name: nuget push
+        if: startsWith(github.ref, 'refs/tags/')  
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          dotnet tool restore
-          dotnet cake --target=pack
+          dotnet cake --target=push
         working-directory: ./tools/cake/
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -28,10 +30,3 @@ jobs:
           files: |
             src/d3/dist/*.nupkg
 
-      - name: nuget push
-        if: startsWith(github.ref, 'refs/tags/')  
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          dotnet cake --target=push --verbosity=diagnostic
-        working-directory: ./tools/cake/
