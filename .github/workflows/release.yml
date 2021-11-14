@@ -20,14 +20,6 @@ jobs:
           dotnet cake --target=pack
         working-directory: ./tools/cake/
 
-      - name: nuget push
-        if: startsWith(github.ref, 'refs/tags/')  
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          dotnet cake --target=push
-        working-directory: ./tools/cake/
-
       - uses: "marvinpinto/action-automatic-releases@latest"
         if: startsWith(github.ref, 'refs/tags/')
         with:
@@ -35,3 +27,11 @@ jobs:
           prerelease: false
           files: |
             ./src/d3/*.nupkg
+
+      - name: nuget push
+        if: startsWith(github.ref, 'refs/tags/')  
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet cake --target=push --verbosity=diagnostic
+        working-directory: ./tools/cake/
