@@ -19,7 +19,7 @@ jobs:
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          dotnet cake --target=push
+          dotnet cake --target=push --verbosity=diagnostic
         working-directory: ./tools/cake/
 
       - uses: "marvinpinto/action-automatic-releases@latest"
