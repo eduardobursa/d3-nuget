@@ -74,6 +74,15 @@ Task("pack")
       },
     };
 
+    var currentBranch = GitBranchCurrent(root);
+
+    var settings =  new XmlPokeSettings {
+      Namespaces = new Dictionary<string, string> {{ "p", "http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" }}
+    };
+
+    XmlPoke(File(nuspect_file), "p:package/p:metadata/p:repository/@branch", currentBranch.FriendlyName, settings);
+    XmlPoke(File(nuspect_file), "p:package/p:metadata/p:repository/@commit", currentBranch.Tip.Sha, settings);
+
     NuGetPack(nuspect_file, nuGetPackSettings);
   });
 
