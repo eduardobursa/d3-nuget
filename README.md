@@ -5,7 +5,7 @@
 # Installing
 
 ```
-|> dotnet add package d3
+dotnet add package d3
 ```
 
 Project Goals
