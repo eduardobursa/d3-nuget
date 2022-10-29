@@ -1,8 +1,8 @@
-#addin nuget:?package=Cake.Http&version=1.2.2
-#addin nuget:?package=Cake.Json&version=6.0.1
+#addin nuget:?package=Cake.Http&version=2.0.0
+#addin nuget:?package=Cake.Json&version=7.0.1
 #addin nuget:?package=Newtonsoft.Json&version=13.0.1
 #addin nuget:?package=Cake.Yarn&version=0.4.8
-#addin nuget:?package=Cake.Git&version=1.1.0
+#addin nuget:?package=Cake.Git&version=2.0.0
 
 string target = Argument("target", "pack");
 
