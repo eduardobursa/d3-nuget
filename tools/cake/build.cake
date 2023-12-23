@@ -1,8 +1,8 @@
-#addin nuget:?package=Cake.Http&version=2.0.0
+#addin nuget:?package=Cake.Http&version=3.0.2
 #addin nuget:?package=Cake.Json&version=7.0.1
-#addin nuget:?package=Newtonsoft.Json&version=13.0.1
-#addin nuget:?package=Cake.Yarn&version=0.4.8
-#addin nuget:?package=Cake.Git&version=2.0.0
+#addin nuget:?package=Newtonsoft.Json&version=13.0.3
+#addin nuget:?package=Cake.Yarn&version=2.0.0
+#addin nuget:?package=Cake.Git&version=3.0.0
 
 string target = Argument("target", "pack");
 
@@ -14,13 +14,15 @@ string d3_dist_folder = d3_submodule_folder + Directory("dist");
 string version = string.Empty;
 string vVersion = string.Empty;
 
-Setup((context) => {
-  version = XmlPeek(nuspect_file, "/p:package/p:metadata/p:version/text()",  new XmlPeekSettings {
-    Namespaces = new Dictionary<string, string> {{ "p", "http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" }}
+Setup((context) =>
+{
+  version = XmlPeek(nuspect_file, "/p:package/p:metadata/p:version/text()", new XmlPeekSettings
+  {
+    Namespaces = new Dictionary<string, string> { { "p", "http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" } }
   });
 
   vVersion = $"v{version}";
-  
+
   Yarn.FromPath(d3_submodule_folder).Install();
 
   EnsureDirectoryExists(d3_dist_folder);
@@ -29,14 +31,14 @@ Setup((context) => {
 
 Task("test")
   .Description("Runs tests")
-  .Does(() => 
+  .Does(() =>
   {
     Yarn.FromPath(d3_submodule_folder).RunScript("test");
   });
 
 Task("bundle")
   .Description("Create nuget package assets")
-  .Does(() => 
+  .Does(() =>
   {
     Yarn.FromPath(d3_submodule_folder).RunScript("rollup -c");
 
@@ -50,7 +52,7 @@ Task("pack")
   .Description("Genrates d3 lib assets and nuget package")
   .IsDependentOn("test")
   .IsDependentOn("bundle")
-  .Does(() => 
+  .Does(() =>
   {
     string responseBody = HttpGet("https://api.github.com/repos/d3/d3/releases");
     var d3_releases = JArray.Parse(responseBody);
@@ -59,16 +61,17 @@ Task("pack")
       .Where(jo => jo["tag_name"].ToString().Equals(vVersion))
       .FirstOrDefault();
 
-    if(release is null)
+    if (release is null)
       Warning($"Release not found. Check if {vVersion} already exists.");
 
-    var nuGetPackSettings = new NuGetPackSettings {
+    var nuGetPackSettings = new NuGetPackSettings
+    {
       Version = version,
       BasePath = d3_dist_folder,
       OutputDirectory = d3_dist_folder,
       NoPackageAnalysis = true,
-      ReleaseNotes = new [] { release?["body"].ToString() },
-      Files = new [] {
+      ReleaseNotes = new[] { release?["body"].ToString() },
+      Files = new[] {
         new NuSpecContent { Source = "**/*", Target = "content/Scripts/d3"},
         new NuSpecContent { Source = "**/*", Target = "contentFiles/any/any/wwwroot/lib/d3"}
       },
@@ -76,8 +79,9 @@ Task("pack")
 
     var currentBranch = GitBranchCurrent(root);
 
-    var settings =  new XmlPokeSettings {
-      Namespaces = new Dictionary<string, string> {{ "p", "http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" }}
+    var settings = new XmlPokeSettings
+    {
+      Namespaces = new Dictionary<string, string> { { "p", "http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" } }
     };
 
     XmlPoke(File(nuspect_file), "p:package/p:metadata/p:repository/@branch", currentBranch.FriendlyName, settings);
@@ -89,9 +93,10 @@ Task("pack")
 Task("push")
   .Description("Pushes nuget package")
   .IsDependentOn("pack")
-  .Does(() => 
+  .Does(() =>
   {
-    NuGetPush(d3_dist_folder + File($"/d3.{version}.nupkg"), new NuGetPushSettings {
+    NuGetPush(d3_dist_folder + File($"/d3.{version}.nupkg"), new NuGetPushSettings
+    {
       Source = "https://api.nuget.org/v3/index.json",
       ApiKey = EnvironmentVariable("NUGET_API_KEY")
     });
