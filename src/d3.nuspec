@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>d3</id>
-    <version>7.9.0</version>
+    <version>7.9.1</version>
     <title>D3</title>
     <authors>eduardobursa,niemyjski,scottweinstein</authors>
     <owners>eduardobursa,niemyjski,scottweinstein</owners>
@@ -16,4 +16,8 @@
     <tags>JavaScript visualization</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
+  <files>
+    <file src="./d3/dist/*" target="content/Scripts/d3" />
+    <file src="./d3/dist/*" target="contentFiles/any/any/wwwroot/lib/d3" />
+  </files>
 </package>
